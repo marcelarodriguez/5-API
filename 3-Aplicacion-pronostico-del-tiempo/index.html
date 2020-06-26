@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Tu propia aplicación de pronóstico del tiempo!</title>
+    <script type="text/javascript" src='http://code.jquery.com/jquery-1.10.2.min.js'></script> 
+    <script>
+
+        $(document).ready(function(){
+            $('form').submit(function(){
+                var ciudad = $('#city').val();
+                $.get("https://api.openweathermap.org/data/2.5/weather?lang=es&q="+ciudad+"&APPID=2a7ba396d1457fb84c757c0297565b40", function(res){
+                    console.log(res);
+                    var htmlagregar= "<h2>"+ciudad+": "+res.weather[0].description+"</h2>"
+                    var temp = res.main.temp-273.15;
+                    temp = Math.round(temp*10)/10;
+
+                    htmlagregar+="<p>Temperatura: " +temp+"°C"+"</p>"
+                    htmlagregar+="<p>Longitud: " +res.coord.lon+ "</p>"
+                    htmlagregar+="<p>Latitud: " +res.coord.lat+ "</p>"
+
+                    $('.info').html(htmlagregar);
+                
+                },"json");
+                return false;
+            });
+        });
+
+    </script>
+
+    <style type="text/css">
+        *{
+            font-family: sans-serif;
+            outline: 0px dotted red;
+        }
+        .contenedor{
+            width: 480px;
+            height: 352px;
+            margin: 0 auto;
+            background-image: url(estaciones.jpg);
+            text-align: center;
+            border-radius: 5px;
+            border-color: blue ;
+            border-style: solid;
+        }
+        p{
+            font-size: 25px;
+            text-transform: capitalize;
+            padding: 2px;
+            margin: -3px;
+        }
+        h1{
+            text-transform: capitalize;
+            padding: 15px;
+            margin: 0px;
+        }
+        h2{
+            text-transform: capitalize;
+            padding: 10px;
+            margin: 0px;
+            font-size: 30px;
+        }
+        input[type=text]{
+            font-size: 18px;
+        }
+        input[type=submit]{
+            font-size: 18px;
+        }
+
+    </style>      
+    
+</head>
+<body>
+    <div class="contenedor">
+        <form method="post">
+            <h1>Climas del mundo</h1>
+            <p><label for="ciudad">City:</label>
+            <input type="text" id="city" name="ciudad">
+            <input type="submit" value="Enviar"></p>
+        </form>
+
+        <div class="info"></div>
+
+    </div>
+    
+</body>
+</html>

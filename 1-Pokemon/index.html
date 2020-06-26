@@ -1,0 +1,49 @@
+<html>
+   <head>
+       <title>POKEMON</title>
+       <script type="text/javascript" src='http://code.jquery.com/jquery-1.10.2.min.js'></script> 
+       <script type="text/javascript">
+
+        $(document).ready(function(){
+            for(var i=1; i<=151; i++){
+                var num = i + ".png";
+                $('.foto').append('<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/'+num+'">');
+            }
+        });
+      
+      </script>
+
+      <style type="text/css">
+        *{
+            font-family: sans-serif;
+            outline: 0px dotted red;
+        }
+        .contenedor{
+            width: 927px;
+            margin: 0 auto;
+            background-image: linear-gradient(to bottom right, red,orange,yellow,green,blue,indigo,violet);
+        }
+        .contenedor h1 {
+            text-align: center;
+            font-size: 40px;
+            margin: -8px 0px 10px 0px;
+            padding: 15px 5px 5px 5px;
+        }
+        img{
+            height: 100px;
+            width: 100px;           
+            border: 1px solid green;
+            margin: 0.5px;
+        }
+
+      </style>
+   </head>
+   <body>
+       <div class="contenedor">
+           <h1>¡Pokedex!</h1>
+           <div class="foto">
+           </div>
+        </div>  
+
+   </body>
+</html>

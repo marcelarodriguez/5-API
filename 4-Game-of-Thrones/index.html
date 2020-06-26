@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Thrones</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        let page = 1;
+        const pageSize = 10;
+        const baseUrl = "https://www.anapioficeandfire.com/api/"
+        $(document).ready(function () {
+
+            function housesGet() {
+                $.get(baseUrl + "houses?pageSize=" + pageSize + "&page=" + page,
+                    function (houses) {
+                        let housesOutput = "";
+                        for (let i = 0; i < houses.length; i++) {
+                            housesOutput += "<li data-url='" + houses[i].url + "'>" + houses[i].name + "</li>";
+                        }
+                        $("#houses ul").html(housesOutput);
+                    },
+                    "json"
+                );
+            }
+
+            housesGet();
+            $("#page").html(page);
+
+            $(document).on("click", "#houses ul li",
+                function () {
+                    const house = $(this).attr("data-url");
+                    $.get(house, function (data) {
+                        console.log(data);
+                        $("")
+                    }, "json");
+                }
+            );
+            $("#more").click(function () {
+                page = page + 1;
+                housesGet();
+                $("#page").html(page);
+            });
+            $("#less").click(function () {
+                if (page > 1) {
+                    page = page - 1;
+                    housesGet();
+                    $("#page").html(page);
+                }
+            });
+
+            $('img').click(function(){
+                var idhousesOutput = $(this).attr('data-house');
+                $.get(baseUrl + "houses/"+idhousesOutput, function(res){
+                    lista(res);
+                },"json");
+            });
+            
+            $(document).on("click","#houses li",function(){
+                var url = $(this).attr('data-url');
+                $.get(url, function(res){
+                    lista(res);
+                },"json");
+            });
+
+            function lista(res){
+                var html_str ="";
+
+                    console.log(res);
+
+                    html_str += "<h3>House Details</h3>";
+
+                    html_str+="<p><strong>Name: </strong>" +res.name+"</p>"
+                    html_str+="<p><strong>Region: </strong>" +res.region+"</p>"
+                    html_str+="<p><strong>Words: </strong>" +res.words+"</p>"
+                    html_str+="<p><strong>Titles: </strong>" +res.titles+"</p>"
+
+                    $('.info').html(html_str);
+
+            }
+
+        });
+
+        //http://jsonviewer.stack.hu/
+
+    </script>
+
+<style type="text/css">
+    *{
+        font-family: sans-serif;
+        outline: 0px dotted red;
+    }
+    .contenedor{
+        background-image: url("img/fondo.jpg");
+        width: 900px;
+        margin: 0 auto;
+    }
+    header{
+        padding-left: 0px;
+    }
+    header img{
+        margin: 0 auto;
+        width: 148px;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: -2px;
+    }
+    .titulo{
+        width: 600px;
+        height: 80px;
+        padding-left: 173px;
+    }
+    #houses{
+        width: 330px;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 47px;
+    }
+    .info{
+        width: 454px;
+        height: 233px;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 20px;
+    }
+    div audio {
+        width: 50%;
+        margin-left: 25%;
+    }
+    p{
+        margin: 8px;
+        font-style: italic;
+    }
+    h3{
+        padding: 5px;
+        margin-bottom: -5px;
+    }
+   
+</style>   
+</head>
+
+<body>
+
+    <div class="contenedor">
+        
+        <img class="titulo" src="img/titulo.png">
+        <header>
+            <img src="img/Stark.png" data-house="362">
+            <img src="img/Targeryen.png" data-house="378">
+            <img src="img/Lannister.png" data-house="229">
+            <img src="img/Baratheon.png" data-house="16">
+            <img src="img/Greyjoy.png" data-house="169">
+            <img src="img/Arryn.png" data-house="7">
+        </header>
+
+        <div>
+            <audio controls loop autoplay id="myaudio">
+                <source src="intro2.mp3">
+            </audio>
+        </div>
+
+        <div id="houses">
+            <ul></ul>
+            <button id="less">-</button>
+            <span id="page"></span>
+            <button id="more">+</button>
+        </div>
+
+        <div class="info"></div>
+       
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<html>
+   <head>
+       <title>¿Cual es ese Pokemon?</title>
+       <script type="text/javascript" src='http://code.jquery.com/jquery-1.10.2.min.js'></script> 
+       <script type="text/javascript">
+
+        $(document).ready(function(){
+            for(var i=1; i<=151; i++){
+                var num = i + ".png";
+                $('.foto').append('<img id="'+i+'" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+num+'">');
+            }
+
+            $('img').hover(function(){
+                var id = $(this).attr('id');
+
+                $.get("https://pokeapi.co/api/v2/pokemon/"+id, function(res) {
+                    var html_str = "";
+
+                    html_str += "<h2>" + res.name + " </h2>";
+                    html_str += '<img id="'+id+'" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png">';
+
+                    html_str += "<h3>Types</h3>"; 
+                    
+                    for(var i = 0; i < res.types.length; i++) {
+                        html_str += "<li>" + res.types[i].type.name + "</li>";
+                    }
+
+                    html_str += "<h3>weight</h3>";
+                    html_str += "<dd>" + res.weight + "</dd>"; 
+
+                    html_str += "<h3>height</h3>";
+                    html_str += "<dd>" + res.height + "</dd>"; 
+
+                    console.log(html_str);
+                    $('.info').html(html_str);
+                }, "json");
+
+            });
+        });
+      
+      </script>
+
+      <style type="text/css">
+        *{
+            font-family: sans-serif;
+            outline: 0px dotted red;
+        }
+        .contenedor{
+            width: 960px;
+            margin: 0 auto;
+            background-image: url(img/fondo2.jpg);
+        }
+        .contenedor h1{
+            text-align: center;
+            font-size: 30px;
+            margin: 0px;
+            color: black;
+            padding-right: 250px;
+        }
+        .contenedor h2{
+            text-align: center;
+            font-size: 21px;
+            padding-top: 80px;
+            padding-right: 30px;   
+        }
+        .contenedor h3{
+            font-size: 15px; 
+            padding-left: 60px;    
+            margin: 5px;       
+        }
+        img{
+            height: 100px;
+            width: 100px;           
+            border: 1px solid white;
+            background-image: url(img/fondooscuro.jpg);
+        }
+        .foto{
+            display: inline-block;
+            vertical-align: top;
+            width: 655px;
+            padding-left: 20px;
+        }
+        .info{ 
+            background-image: url(img/pokedexnew.jpg);
+            width: 247px;
+            height: 532px;
+            display: inline-block;
+            vertical-align: top;
+            text-transform: capitalize;
+            padding: 10px;
+            position: fixed;            
+        }
+        .info img{
+            margin-left: 60px;
+            margin-top: -12px;
+        }
+        dd{
+            margin-left: 75px;
+        }
+        li{
+            margin-left: 71px;
+        }
+
+      </style>
+   </head>
+   <body>
+       <div class="contenedor">
+           <h1>¡Pokedex! <br> ¿Cuál es ese Pokémon?</h1>
+           <div class="foto"></div>
+           <div class="info"></div>
+        </div>  
+
+   </body>
+</html>
